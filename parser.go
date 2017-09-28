@@ -31,7 +31,8 @@ func (i FeedItem) Description() string{
 }
 
 func (i FeedItem) SentTime() string{
-	return ""
+	regex := regexp.MustCompile(`(?m)^[\S \n]+Sent: (.+)$`)
+	return regex.FindStringSubmatch(i.CleanText())[1]
 }
 
 type Feed struct{
