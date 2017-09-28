@@ -4,10 +4,11 @@ import(
 	"net/http"
 	"fmt"
 	"strings"
+	"github.com/nint8835/munstatusparser"
 )
 
 func handler(w http.ResponseWriter, r *http.Request){
-	feed := GetFeed()
+	feed := munstatusparser.GetFeed()
 
 	var items = []string{}
 	for _, item := range feed.FeedItems{

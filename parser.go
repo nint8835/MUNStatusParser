@@ -1,4 +1,4 @@
-package MUNStatusParser
+package munstatusparser
 
 import(
 	"github.com/grokify/html-strip-tags-go"
