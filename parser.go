@@ -1,4 +1,4 @@
-package main
+package MUNStatusParser
 
 import(
 	"github.com/grokify/html-strip-tags-go"
@@ -19,12 +19,19 @@ type FeedItem struct{
 	Title           string
 }
 
+func (i FeedItem) CleanText() string{
+	newlineReplaced := strings.Replace(i.DescriptionHTML, "<br>", "\n", -1)
+	tagsFixed := strings.Replace(newlineReplaced, "\\/", "/", -1)
+	return strip.StripTags(tagsFixed)
+}
+
 func (i FeedItem) Description() string{
 	regex := regexp.MustCompile(`(?m)^([\S \n]+)Sent: .+$`)
-	newline_replaced := strings.Replace(i.DescriptionHTML, "<br>", "\n", -1)
-	tags_fixed := strings.Replace(newline_replaced, "\\/", "/", -1)
-	tags_stripped := strip.StripTags(tags_fixed)
-	return regex.FindStringSubmatch(tags_stripped)[1]
+	return regex.FindStringSubmatch(i.CleanText())[1]
+}
+
+func (i FeedItem) SentTime() string{
+	return ""
 }
 
 type Feed struct{

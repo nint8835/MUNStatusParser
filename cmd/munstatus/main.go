@@ -11,7 +11,7 @@ func handler(w http.ResponseWriter, r *http.Request){
 
 	var items = []string{}
 	for _, item := range feed.FeedItems{
-		items = append(items, item.Description())
+		items = append(items, item.CleanText())
 	}
 
 	fmt.Fprintf(w, strings.Join(items, "\n\n"))
