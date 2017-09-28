@@ -1,9 +1,23 @@
 package main
 
 import(
+	"net/http"
 	"fmt"
+	"strings"
 )
 
+func handler(w http.ResponseWriter, r *http.Request){
+	feed := GetFeed()
+
+	var items = []string{}
+	for _, item := range feed.FeedItems{
+		items = append(items, item.Description())
+	}
+
+	fmt.Fprintf(w, strings.Join(items, "\n\n"))
+}
+
 func main() {
-	fmt.Print(GetFeed().FeedItems[0].Description())
+	http.HandleFunc("/", handler)
+	http.ListenAndServe(":8080", nil)
 }

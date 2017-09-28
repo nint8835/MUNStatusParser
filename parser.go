@@ -20,7 +20,7 @@ type FeedItem struct{
 }
 
 func (i FeedItem) Description() string{
-	regex := regexp.MustCompile(`(?m)^([\S \n]+)Sent: \d+.+$`)
+	regex := regexp.MustCompile(`(?m)^([\S \n]+)Sent: .+$`)
 	newline_replaced := strings.Replace(i.DescriptionHTML, "<br>", "\n", -1)
 	tags_fixed := strings.Replace(newline_replaced, "\\/", "/", -1)
 	tags_stripped := strip.StripTags(tags_fixed)
