@@ -7,6 +7,7 @@ import(
 	"net/http"
 	"log"
 	"io/ioutil"
+	"regexp"
 )
 
 const MUN_URL string = "https://mun.apparmor.com/notificationhistory/"
@@ -19,9 +20,11 @@ type FeedItem struct{
 }
 
 func (i FeedItem) Description() string{
+	regex := regexp.MustCompile(`(?m)^([\S \n]+)Sent: \d+.+$`)
 	newline_replaced := strings.Replace(i.DescriptionHTML, "<br>", "\n", -1)
 	tags_fixed := strings.Replace(newline_replaced, "\\/", "/", -1)
-	return strip.StripTags(tags_fixed)
+	tags_stripped := strip.StripTags(tags_fixed)
+	return regex.FindStringSubmatch(tags_stripped)[1]
 }
 
 type Feed struct{
