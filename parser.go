@@ -5,7 +5,6 @@ import(
 	"strings"
 	"encoding/json"
 	"net/http"
-	"log"
 	"io/ioutil"
 	"regexp"
 )
@@ -39,31 +38,31 @@ type Feed struct{
 	FeedItems []FeedItem
 }
 
-func GetFeed() Feed{
+func GetFeed() (Feed, error){
 	return GetFeedFromUrl(MUN_URL)
 }
 
-func GetFeedFromUrl(url string) Feed{
+func GetFeedFromUrl(url string) (Feed, error){
 	response, err := http.Get(url)
 	if err != nil{
-		log.Fatal(err)
+		return Feed{}, nil
 	}
 	defer response.Body.Close()
 
 	data, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		log.Fatal(err)
+		return Feed{}, nil
 	}
 
 	return Parse(data)
 
 }
 
-func Parse(b []byte) Feed{
+func Parse(b []byte) (Feed, error){
 	var feed Feed
 	err := json.Unmarshal(b, &feed)
 	if err != nil{
-		log.Fatal(err)
+		return Feed{}, err
 	}
-	return feed
+	return feed, nil
 }

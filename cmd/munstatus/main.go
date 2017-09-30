@@ -8,14 +8,16 @@ import(
 )
 
 func handler(w http.ResponseWriter, r *http.Request){
-	feed := munstatusparser.GetFeed()
+	feed, err := munstatusparser.GetFeed()
 
-	var items = []string{}
-	for _, item := range feed.FeedItems{
-		items = append(items, item.CleanText())
+	if err == nil{
+		var items = []string{}
+		for _, item := range feed.FeedItems{
+			items = append(items, item.CleanText())
+		}
+
+		fmt.Fprintf(w, strings.Join(items, "\n\n"))
 	}
-
-	fmt.Fprintf(w, strings.Join(items, "\n\n"))
 }
 
 func main() {
