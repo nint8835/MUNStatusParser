@@ -21,17 +21,17 @@ type FeedItem struct{
 func (i FeedItem) CleanText() string{
 	newlineReplaced := strings.Replace(i.DescriptionHTML, "<br>", "\n", -1)
 	tagsFixed := strings.Replace(newlineReplaced, "\\/", "/", -1)
-	return strip.StripTags(tagsFixed)
+	return strings.TrimSpace(strip.StripTags(tagsFixed))
 }
 
 func (i FeedItem) Description() string{
 	regex := regexp.MustCompile(`(?m)^([\S \n]+)Sent: .+$`)
-	return regex.FindStringSubmatch(i.CleanText())[1]
+	return strings.TrimSpace(regex.FindStringSubmatch(i.CleanText())[1])
 }
 
 func (i FeedItem) SentTime() string{
 	regex := regexp.MustCompile(`(?m)^[\S \n]+Sent: (.+)$`)
-	return regex.FindStringSubmatch(i.CleanText())[1]
+	return strings.TrimSpace(regex.FindStringSubmatch(i.CleanText())[1])
 }
 
 type Feed struct{
