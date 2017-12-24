@@ -25,12 +25,12 @@ func (i FeedItem) CleanText() string{
 }
 
 func (i FeedItem) Description() string{
-	regex := regexp.MustCompile(`(?m)^([\S \n]+)Sent: .+$`)
+	regex := regexp.MustCompile(`(?m)^.+\n([\S \n]+)\n.+$`)
 	return strings.TrimSpace(regex.FindStringSubmatch(i.CleanText())[1])
 }
 
 func (i FeedItem) SentTime() string{
-	regex := regexp.MustCompile(`(?m)^[\S \n]+Sent: (.+)$`)
+	regex := regexp.MustCompile(`(?m)^[\S \n]+\n(.+)$`)
 	return strings.TrimSpace(regex.FindStringSubmatch(i.CleanText())[1])
 }
 

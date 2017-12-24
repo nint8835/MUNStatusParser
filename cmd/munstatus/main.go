@@ -11,7 +11,7 @@ func handler(w http.ResponseWriter, r *http.Request){
 	feed, err := munstatusparser.GetFeed()
 
 	if err == nil{
-		var items = []string{}
+		var items []string
 		for _, item := range feed.FeedItems{
 			items = append(items, item.CleanText())
 		}
